@@ -4,7 +4,7 @@ import "testing"
 
 func TestInsertUrlIntoDB(t *testing.T) {
 	TestConnectToSQL(t)
-	err := InsertRecordIntoDB("https://www.youtube.com/", "r8Uygm", "0")
+	err := InsertRecordIntoDB("https://www.youtube.com/", "r9Uygm", "0")
 	if err != nil {
 		t.Logf("error in insert record: %v", err.Error())
 		t.Fatal("DB Record Insert failed!")
@@ -14,7 +14,7 @@ func TestInsertUrlIntoDB(t *testing.T) {
 
 func TestDeleteUrlFromDB(t *testing.T) {
 	TestConnectToSQL(t)
-	if err := DeleteRecordInDB("roUygm"); err != nil {
+	if err := DeleteRecordInDB("r9Uygm"); err != nil {
 		t.Logf("error in delete record: %v", err.Error())
 		t.Fatal("DB Record Delete failed!")
 	}

@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/logeshwarann-dev/url-shortener/internal/models"
+	"github.com/logeshwarann-dev/url-shortener/internal/repository/postgres"
 	"github.com/logeshwarann-dev/url-shortener/pkg/utils"
 )
 
@@ -33,12 +34,16 @@ func CreateShortURL(ctx *gin.Context) {
 	var urlDetails models.UrlInfo
 
 	if err := ctx.ShouldBindJSON(&urlDetails); err != nil {
-		log.Fatal("Error while binding json: ", err)
+		log.Println("Error while binding json: ", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
 	}
 
 	urlDetails.ShortCode = GenerateUniqueCode(urlDetails.Url)
-
+	err := postgres.InsertRecordIntoDB(urlDetails.Url, urlDetails.ShortCode, utils.IntToStr(urlDetails.AccessCount))
+	if err != nil {
+		log.Println("Error in DB Record Insertion: ", err.Error())
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+	}
 	ctx.JSON(http.StatusCreated, gin.H{"message": "New Short URL created successfully", "ShortenUrl": urlDetails})
 }
 

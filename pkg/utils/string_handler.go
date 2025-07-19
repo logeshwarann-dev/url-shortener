@@ -3,9 +3,19 @@ package utils
 import (
 	"crypto/rand"
 	"log"
+	"strconv"
 
 	"github.com/deatil/go-encoding/base62"
 )
+
+func IntToStr(n int) string {
+	return strconv.Itoa(n)
+}
+
+func StrToInt(s string) int {
+	num, _ := strconv.Atoi(s)
+	return num
+}
 
 func GetShortCode(limit int) string {
 	const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
