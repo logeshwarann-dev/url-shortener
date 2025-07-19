@@ -14,13 +14,20 @@ import (
 POST /shorten
 
 {
-	url: "https://www.google.com"
+  "url": "https://www.example.com/some/updated/url"
+}
+
+Response:
+{
+  "id": "1",
+  "url": "https://www.example.com/some/updated/url",
+  "shortCode": "abc123",
+  "createdAt": "2021-09-01T12:00:00Z",
+  "updatedAt": "2021-09-01T12:30:00Z"
 }
 */
 
-var (
-	IdCounter int
-)
+const ShortCodeLength = 6
 
 func CreateShortURL(ctx *gin.Context) {
 	var urlDetails models.UrlInfo
@@ -32,10 +39,10 @@ func CreateShortURL(ctx *gin.Context) {
 
 	urlDetails.ShortCode = GenerateUniqueCode(urlDetails.Url)
 
-	ctx.JSON(http.StatusCreated, gin.H{"message": "New Short URL created successfully"})
+	ctx.JSON(http.StatusCreated, gin.H{"message": "New Short URL created successfully", "ShortenUrl": urlDetails})
 }
 
 func GenerateUniqueCode(url string) string {
-	shortCode := utils.EncodeString(url)
+	shortCode := utils.GetShortCode(ShortCodeLength)
 	return shortCode
 }

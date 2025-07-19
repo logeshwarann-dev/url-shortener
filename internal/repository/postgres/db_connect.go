@@ -18,6 +18,7 @@ var (
 	dbName     string
 	dbSslMode  string
 	dbTimeZone string
+	DbConn     *gorm.DB
 )
 
 func LoadDBEnv() {
@@ -50,6 +51,7 @@ func ConnectToSQL() error {
 		return err
 	}
 	log.Println("DB Connection successful!")
+	DbConn = db
 	return nil
 }
 
@@ -58,4 +60,8 @@ func PingCheck(db *sql.DB) error {
 		return fmt.Errorf("unable to ping database: %v", err)
 	}
 	return nil
+}
+
+func GetDBConn() *gorm.DB {
+	return DbConn
 }
