@@ -14,6 +14,10 @@ func LoadEnv(filepath string) {
 	}
 }
 
+func SetEnv(variable string, value string) {
+	os.Setenv(variable, value)
+}
+
 func GetEnv(envName string) string {
 	return os.Getenv(envName)
 }

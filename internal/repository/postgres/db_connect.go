@@ -55,7 +55,7 @@ func ConnectToSQL() error {
 
 func PingCheck(db *sql.DB) error {
 	if err := db.Ping(); err != nil {
-		return fmt.Errorf("Unable to ping database: ", err.Error())
+		return fmt.Errorf("unable to ping database: %v", err)
 	}
 	return nil
 }
