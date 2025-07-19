@@ -19,3 +19,7 @@ func DeleteURL() {
 func FetchCount() {
 
 }
+
+func GetTotalEntriesInDB() {
+
+}

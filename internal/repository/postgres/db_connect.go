@@ -38,12 +38,12 @@ func ConnectToSQL() error {
 	dsn := GetDatabaseConnectionString()
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		fmt.Println("Error while connecting to DB: ", err.Error())
-		log.Fatal("Error connection to DB: ", err.Error())
+		log.Println("Error connection to DB: ", err.Error())
+		return err
 	}
 	dbase, err := db.DB()
 	if err != nil {
-		log.Fatal("Unable to get db instance: ", err.Error())
+		log.Println("Unable to get db instance: ", err.Error())
 		return err
 	}
 	if err := PingCheck(dbase); err != nil {

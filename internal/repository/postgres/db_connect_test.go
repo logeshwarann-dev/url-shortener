@@ -1,7 +1,6 @@
 package postgres
 
 import (
-	"log"
 	"testing"
 
 	"github.com/logeshwarann-dev/url-shortener/pkg/utils"
@@ -20,7 +19,8 @@ func TestConnectToSQL(t *testing.T) {
 	setDBEnv()
 	LoadDBEnv()
 	if err := ConnectToSQL(); err != nil {
-		log.Panic("DB connection failed")
+		t.Error("Error connecting to DB: ", err.Error())
+		t.Fatalf("DB connection failed")
 	}
-	log.Println("DB connection successful!")
+	t.Logf("DB connection successful!")
 }
