@@ -6,8 +6,8 @@ func BuildInsertQuery(table string, longUrl string, shortCode string, accessCoun
 	return fmt.Sprintf("INSERT INTO %v (url, short_code, access_count) VALUES ('%v', '%v', '%v') ;", table, longUrl, shortCode, accessCount)
 }
 
-func BuildDeleteQuery() {
-
+func BuildDeleteQuery(table string, shortCode string) string {
+	return fmt.Sprintf("DELETE FROM %v WHERE short_code = '%v' ;", table, shortCode)
 }
 
 func BuildFetchQuery() {
