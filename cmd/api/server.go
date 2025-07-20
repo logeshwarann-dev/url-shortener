@@ -5,7 +5,6 @@ import (
 
 	"github.com/logeshwarann-dev/url-shortener/internal/api/router"
 	"github.com/logeshwarann-dev/url-shortener/internal/repository/postgres"
-	"github.com/logeshwarann-dev/url-shortener/pkg/utils"
 )
 
 var (
@@ -13,10 +12,10 @@ var (
 	serverPort string
 )
 
-const envFilePath = "D:\\Workspace\\GoLang\\RoadMapProjects\\url-shortener\\cmd\\api\\.env"
+// const envFilePath = "D:\\Workspace\\GoLang\\RoadMapProjects\\url-shortener\\cmd\\api\\.env"
 
 func init() {
-	utils.LoadEnv(envFilePath)
+	// utils.LoadEnv(envFilePath) // Only for Local Testing
 	serverHost, serverPort = router.LoadAPIEnv()
 	postgres.LoadDBEnv()
 	if err := postgres.ConnectToSQL(); err != nil {

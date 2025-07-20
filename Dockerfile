@@ -13,6 +13,8 @@ COPY . .
 # Enable static build to reduce dependencies
 ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
 
+WORKDIR /app/cmd/api
+
 # Build the binary
 RUN go build -ldflags="-s -w" -o url-service .
 
@@ -22,7 +24,7 @@ FROM gcr.io/distroless/base-debian12
 WORKDIR /app
 
 # Copy the static binary from the builder stage
-COPY --from=builder /app/url-service .
+COPY --from=builder /app/cmd/api/url-service .
 
 # Expose ports for 10 auth-service connections (starting at 30500)
 EXPOSE 8080
