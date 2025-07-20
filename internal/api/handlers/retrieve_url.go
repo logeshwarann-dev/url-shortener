@@ -20,6 +20,11 @@ func RetrieveShortURL(ctx *gin.Context) {
 	}
 	var urlRecord models.UrlInfo
 	if err := postgres.FetchRecordFromDB(targetShortCode, &urlRecord); err != nil {
+		if utils.StringContains(err.Error(), "record doesn't exist") {
+			log.Println("Error in RetrieveShortURL handler: ", err.Error())
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+			return
+		}
 		log.Println("error while fetching url record from db: ", err.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
 		return
@@ -47,6 +52,11 @@ func RetrieveShortURLStats(ctx *gin.Context) {
 	}
 	var urlRecord models.UrlInfo
 	if err := postgres.FetchRecordFromDB(targetShortCode, &urlRecord); err != nil {
+		if utils.StringContains(err.Error(), "record doesn't exist") {
+			log.Println("Error in RetrieveShortURLStats handler: ", err.Error())
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+			return
+		}
 		log.Println("error while fetching url record from db: ", err.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
 		return

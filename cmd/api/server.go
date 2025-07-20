@@ -13,8 +13,10 @@ var (
 	serverPort string
 )
 
+const envFilePath = "D:\\Workspace\\GoLang\\RoadMapProjects\\url-shortener\\cmd\\api\\.env"
+
 func init() {
-	utils.LoadEnv("D:\\Workspace\\GoLang\\RoadMapProjects\\url-shortener\\cmd\\api\\.env")
+	utils.LoadEnv(envFilePath)
 	serverHost, serverPort = router.LoadAPIEnv()
 	postgres.LoadDBEnv()
 	if err := postgres.ConnectToSQL(); err != nil {

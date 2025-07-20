@@ -32,6 +32,10 @@ func UpdateShortURL(ctx *gin.Context) {
 		return
 	}
 
+	if err := UpdateAccessCount(DefaultAccessCount, targetShortCode); err != nil {
+		log.Println("Error in RetrieveShortURL handler: ", err.Error())
+	}
+
 	if err := postgres.FetchRecordFromDB(targetShortCode, &newUrlDetails); err != nil {
 		log.Println("error while fetching url record from db: ", err.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
