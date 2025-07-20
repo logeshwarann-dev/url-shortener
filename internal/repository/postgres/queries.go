@@ -14,6 +14,6 @@ func BuildFetchQuery(table string, shortCode string) string {
 	return fmt.Sprintf("SELECT * FROM %v WHERE short_code = '%v' ;", table, shortCode)
 }
 
-func BuildUpdateQuery() {
-
+func BuildUpdateQuery(table string, targetField string, updatedValue string, shortCode string) string {
+	return fmt.Sprintf("UPDATE %v SET %v = '%v' WHERE short_code = '%v' ;", table, targetField, updatedValue, shortCode)
 }

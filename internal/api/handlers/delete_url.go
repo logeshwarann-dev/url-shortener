@@ -22,5 +22,5 @@ func DeleteShortURL(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
 		return
 	}
-	ctx.JSON(http.StatusAccepted, gin.H{"message": "record has been deleted"})
+	ctx.JSON(http.StatusNoContent, gin.H{"message": "record has been deleted"})
 }

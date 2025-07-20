@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/logeshwarann-dev/url-shortener/internal/models"
+	"github.com/logeshwarann-dev/url-shortener/pkg/utils"
 )
 
 const tableName = "url_info"
@@ -18,12 +19,34 @@ func InsertRecordIntoDB(longUrl string, shortCode string, accessCount string) er
 	return nil
 }
 
-func UpdateRecordInDB() {
+func UpdateRecordInDB(targetField string, newValue int, shortCode string) error {
 
+	db := GetDBConn()
+	updatedVal := utils.IntToStr(newValue)
+	isRowPresent, err := CheckIfRecordExists(shortCode)
+	if err != nil {
+		return err
+	}
+	if !isRowPresent {
+		return fmt.Errorf("record doesn't exist in db")
+	}
+	rawQuery := BuildUpdateQuery(tableName, targetField, updatedVal, shortCode)
+	tx := db.Exec(rawQuery)
+	if tx.Error != nil {
+		return fmt.Errorf("error while updating record: %v", tx.Error.Error())
+	}
+	return nil
 }
 
 func FetchRecordFromDB(shortCode string, urlStruct *models.UrlInfo) error {
 	db := GetDBConn()
+	isRowPresent, err := CheckIfRecordExists(shortCode)
+	if err != nil {
+		return err
+	}
+	if !isRowPresent {
+		return fmt.Errorf("record doesn't exist in db")
+	}
 	rawQuery := BuildFetchQuery(tableName, shortCode)
 	tx := db.Raw(rawQuery).Scan(urlStruct)
 	if tx.Error != nil {
@@ -42,10 +65,13 @@ func DeleteRecordInDB(shortCode string) error {
 	return nil
 }
 
-func FetchCountFromDB() {
-
-}
-
-func GetTotalEntriesInDB() {
-
+func CheckIfRecordExists(shortCode string) (bool, error) {
+	db := GetDBConn()
+	rawQuery := BuildFetchQuery(tableName, shortCode)
+	var isPresent bool
+	err := db.Raw(rawQuery).Row().Scan(&isPresent)
+	if err != nil {
+		return false, fmt.Errorf("error while scanning record: %v", err.Error())
+	}
+	return isPresent, nil
 }
