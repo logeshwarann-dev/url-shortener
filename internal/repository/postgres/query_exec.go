@@ -1,6 +1,10 @@
 package postgres
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/logeshwarann-dev/url-shortener/internal/models"
+)
 
 const tableName = "url_info"
 
@@ -18,8 +22,14 @@ func UpdateRecordInDB() {
 
 }
 
-func FetchRecordFromDB() {
-
+func FetchRecordFromDB(shortCode string, urlStruct *models.UrlInfo) error {
+	db := GetDBConn()
+	rawQuery := BuildFetchQuery(tableName, shortCode)
+	tx := db.Raw(rawQuery).Scan(urlStruct)
+	if tx.Error != nil {
+		return fmt.Errorf("error while fetching record: %v", tx.Error.Error())
+	}
+	return nil
 }
 
 func DeleteRecordInDB(shortCode string) error {

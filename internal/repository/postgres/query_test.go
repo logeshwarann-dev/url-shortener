@@ -1,6 +1,10 @@
 package postgres
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/logeshwarann-dev/url-shortener/internal/models"
+)
 
 func TestInsertUrlIntoDB(t *testing.T) {
 	TestConnectToSQL(t)
@@ -19,4 +23,16 @@ func TestDeleteUrlFromDB(t *testing.T) {
 		t.Fatal("DB Record Delete failed!")
 	}
 	t.Log("DB Record Deletion operation successful!")
+}
+
+func TestFetchUrlFromDB(t *testing.T) {
+	TestConnectToSQL(t)
+	var urlRecord models.UrlInfo
+	if err := FetchRecordFromDB("r9Uygm", &urlRecord); err != nil {
+		t.Logf("error in delete record: %v", err.Error())
+		t.Fatal("DB Record Delete failed!")
+	}
+	t.Log("URL Record: ", urlRecord)
+	t.Log("DB Record Deletion operation successful!")
+
 }

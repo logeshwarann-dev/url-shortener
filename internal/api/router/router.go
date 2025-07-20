@@ -21,8 +21,8 @@ func Start(host string, port string) {
 
 func RegisterRoutes(router *gin.Engine) {
 	router.POST("/shorten", handlers.CreateShortURL)
-	router.GET("/shorten/:id", handlers.RetrieveShortURL)
-	router.PUT("/shorten/:id", handlers.UpdateShortURL)
-	router.DELETE("/shorten/:id", handlers.DeleteShortURL)
-	router.GET("/shorten/:id/stats", handlers.RetrieveShortURLStats)
+	router.GET("/shorten/:shortCode", handlers.RetrieveShortURL)
+	router.PUT("/shorten/:shortCode", handlers.UpdateShortURL)
+	router.DELETE("/shorten/:shortCode", handlers.DeleteShortURL)
+	router.GET("/shorten/:shortCode/stats", handlers.RetrieveShortURLStats)
 }

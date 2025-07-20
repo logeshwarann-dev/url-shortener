@@ -5,22 +5,22 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/logeshwarann-dev/url-shortener/internal/models"
 	"github.com/logeshwarann-dev/url-shortener/internal/repository/postgres"
 )
 
 func DeleteShortURL(ctx *gin.Context) {
-	var deleteReq models.UrlInfo
-
-	if err := ctx.ShouldBindJSON(&deleteReq); err != nil {
-		log.Println("Error binding json: ", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+	targetShortCode := ctx.Param("shortCode")
+	if len(targetShortCode) == 0 {
+		log.Println("Recieved Empty Short Code")
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request"})
+		return
 	}
 
-	err := postgres.DeleteRecordInDB(deleteReq.ShortCode)
+	err := postgres.DeleteRecordInDB(targetShortCode)
 	if err != nil {
 		log.Println("Error while deleting shortCode: ", err.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
 	}
 	ctx.JSON(http.StatusAccepted, gin.H{"message": "record has been deleted"})
 }

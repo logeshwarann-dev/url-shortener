@@ -15,7 +15,7 @@ import (
 POST /shorten
 
 {
-  "url": "https://www.example.com/some/updated/url"
+  "url": "https://www.example.com/some/long/url"
 }
 
 Response:
@@ -36,6 +36,7 @@ func CreateShortURL(ctx *gin.Context) {
 	if err := ctx.ShouldBindJSON(&urlDetails); err != nil {
 		log.Println("Error while binding json: ", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+		return
 	}
 
 	urlDetails.ShortCode = GenerateUniqueCode(urlDetails.Url)
@@ -43,8 +44,22 @@ func CreateShortURL(ctx *gin.Context) {
 	if err != nil {
 		log.Println("Error in DB Record Insertion: ", err.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
 	}
-	ctx.JSON(http.StatusCreated, gin.H{"message": "New Short URL created successfully", "ShortenUrl": urlDetails})
+
+	if err := postgres.FetchRecordFromDB(urlDetails.ShortCode, &urlDetails); err != nil {
+		log.Println("error while fetching url record from db: ", err.Error())
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
+	if utils.IsStringEmpty(urlDetails.ShortCode) {
+		log.Println("record not properly inserted: ", urlDetails.ShortCode)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"id": utils.IntToStr(urlDetails.Id), "url": urlDetails.Url, "shortCode": urlDetails.ShortCode, "createdAt": urlDetails.CreatedAt, "updatedAt": urlDetails.UpdatedAt})
+
 }
 
 func GenerateUniqueCode(url string) string {

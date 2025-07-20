@@ -10,8 +10,8 @@ func BuildDeleteQuery(table string, shortCode string) string {
 	return fmt.Sprintf("DELETE FROM %v WHERE short_code = '%v' ;", table, shortCode)
 }
 
-func BuildFetchQuery() {
-
+func BuildFetchQuery(table string, shortCode string) string {
+	return fmt.Sprintf("SELECT * FROM %v WHERE short_code = '%v' ;", table, shortCode)
 }
 
 func BuildUpdateQuery() {

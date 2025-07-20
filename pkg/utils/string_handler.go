@@ -8,6 +8,10 @@ import (
 	"github.com/deatil/go-encoding/base62"
 )
 
+func IsStringEmpty(s string) bool {
+	return len(s) == 0
+}
+
 func IntToStr(n int) string {
 	return strconv.Itoa(n)
 }
