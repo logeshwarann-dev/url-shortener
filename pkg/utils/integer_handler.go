@@ -4,8 +4,13 @@ import (
 	"crypto/rand"
 	"fmt"
 	"math/big"
+	"reflect"
 	"strconv"
 )
+
+func CheckIfIntType(value any) bool {
+	return reflect.TypeOf(value).Kind() == reflect.Int
+}
 
 func GenerateRandomNum(size int) int {
 	var randStr string

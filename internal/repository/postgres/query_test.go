@@ -8,7 +8,7 @@ import (
 
 func TestInsertUrlIntoDB(t *testing.T) {
 	TestConnectToSQL(t)
-	err := InsertRecordIntoDB("https://www.youtube.com/", "r9Uygm", "0")
+	err := InsertRecordIntoDB("https://www.youtube.com/", "r9Uygm", 1)
 	if err != nil {
 		t.Logf("error in insert record: %v", err.Error())
 		t.Fatal("DB Record Insert failed!")

@@ -3,10 +3,19 @@ package utils
 import (
 	"crypto/rand"
 	"log"
+	"reflect"
 	"strconv"
 
 	"github.com/deatil/go-encoding/base62"
 )
+
+func CheckIfStringType(value any) bool {
+	return reflect.TypeOf(value).Kind() == reflect.String
+}
+
+func CheckIfIntType(value any) bool {
+	return reflect.TypeOf(value).Kind() == reflect.Int
+}
 
 func IsStringEmpty(s string) bool {
 	return len(s) == 0

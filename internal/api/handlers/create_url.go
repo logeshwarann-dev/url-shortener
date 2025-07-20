@@ -29,6 +29,7 @@ Response:
 */
 
 const ShortCodeLength = 6
+const DefaultAccessCount = 1
 
 func CreateShortURL(ctx *gin.Context) {
 	var urlDetails models.UrlInfo
@@ -40,7 +41,7 @@ func CreateShortURL(ctx *gin.Context) {
 	}
 
 	urlDetails.ShortCode = GenerateUniqueCode(urlDetails.Url)
-	err := postgres.InsertRecordIntoDB(urlDetails.Url, urlDetails.ShortCode, utils.IntToStr(urlDetails.AccessCount))
+	err := postgres.InsertRecordIntoDB(urlDetails.Url, urlDetails.ShortCode, DefaultAccessCount)
 	if err != nil {
 		log.Println("Error in DB Record Insertion: ", err.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})

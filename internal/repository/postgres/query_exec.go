@@ -9,9 +9,10 @@ import (
 
 const tableName = "url_info"
 
-func InsertRecordIntoDB(longUrl string, shortCode string, accessCount string) error {
+func InsertRecordIntoDB(longUrl string, shortCode string, accessCount int) error {
 	db := GetDBConn()
-	rawQuery := BuildInsertQuery(tableName, longUrl, shortCode, accessCount)
+
+	rawQuery := BuildInsertQuery(tableName, longUrl, shortCode, utils.IntToStr(accessCount))
 	tx := db.Exec(rawQuery)
 	if tx.Error != nil {
 		return fmt.Errorf("error while inserting record: %v", tx.Error.Error())
@@ -19,10 +20,9 @@ func InsertRecordIntoDB(longUrl string, shortCode string, accessCount string) er
 	return nil
 }
 
-func UpdateRecordInDB(targetField string, newValue int, shortCode string) error {
+func UpdateRecordInDB(targetField string, newValue string, shortCode string) error {
 
 	db := GetDBConn()
-	updatedVal := utils.IntToStr(newValue)
 	isRowPresent, err := CheckIfRecordExists(shortCode)
 	if err != nil {
 		return err
@@ -30,7 +30,7 @@ func UpdateRecordInDB(targetField string, newValue int, shortCode string) error 
 	if !isRowPresent {
 		return fmt.Errorf("record doesn't exist in db")
 	}
-	rawQuery := BuildUpdateQuery(tableName, targetField, updatedVal, shortCode)
+	rawQuery := BuildUpdateQuery(tableName, targetField, newValue, shortCode)
 	tx := db.Exec(rawQuery)
 	if tx.Error != nil {
 		return fmt.Errorf("error while updating record: %v", tx.Error.Error())

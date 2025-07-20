@@ -40,7 +40,7 @@ func RetrieveShortURL(ctx *gin.Context) {
 
 func RetrieveShortURLStats(ctx *gin.Context) {
 	targetShortCode := ctx.Param("shortCode")
-	if len(targetShortCode) == 0 {
+	if utils.IsStringEmpty(targetShortCode) {
 		log.Println("Recieved Empty Short Code")
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request"})
 		return
@@ -63,7 +63,7 @@ func RetrieveShortURLStats(ctx *gin.Context) {
 
 func UpdateAccessCount(currentAccessCnt int, shortCode string) error {
 	accessCntField := "access_count"
-	newCount := currentAccessCnt + 1
+	newCount := utils.IntToStr(currentAccessCnt + 1)
 	if err := postgres.UpdateRecordInDB(accessCntField, newCount, shortCode); err != nil {
 		return fmt.Errorf("failed updating access count: %v", err.Error())
 	}

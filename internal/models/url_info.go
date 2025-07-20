@@ -11,6 +11,15 @@ type UrlInfo struct {
 	AccessCount int       `json:"accessCount"`
 }
 
+const (
+	IdField          = "id"
+	UrlField         = "url"
+	ShortCodeField   = "short_code"
+	CreatedAtField   = "created_at"
+	UpdatedAtField   = "updated_at"
+	AccessCountField = "access_count"
+)
+
 const Schema = `
 CREATE TABLE url_info( 
     id serial not null primary key,
