@@ -2,9 +2,11 @@ package postgres
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/logeshwarann-dev/url-shortener/internal/models"
 	"github.com/logeshwarann-dev/url-shortener/pkg/utils"
+	"gorm.io/gorm"
 )
 
 const tableName = "url_info"
@@ -83,4 +85,33 @@ func CheckIfRecordExists(shortCode string) (bool, error) {
 		return false, fmt.Errorf("error while scanning record: %v", err.Error())
 	}
 	return found, nil
+}
+
+func CreateTableIfNotExists() error {
+	db := GetDBConn()
+	tableExists, err := CheckIfTableExists(db, tableName)
+	if err != nil {
+		return err
+	}
+	if tableExists {
+		log.Printf("%v already exists\n", tableName)
+		return nil
+	}
+	creatTableQuery := BuildCreateTableQuery()
+	tx := db.Exec(creatTableQuery)
+	if tx.Error != nil {
+		return fmt.Errorf("error while creating table: %v", tx.Error.Error())
+	}
+	return nil
+}
+
+func CheckIfTableExists(db *gorm.DB, table string) (bool, error) {
+	var isTablePresent bool
+	tableCheckQuery := BuildTableCheckQuery(table)
+	tx := db.Raw(tableCheckQuery).Scan(&isTablePresent)
+	if tx.Error != nil {
+		return false, fmt.Errorf("error in scanning for table existence: %v", tx.Error.Error())
+	}
+	return isTablePresent, nil
+
 }

@@ -36,3 +36,12 @@ func TestFetchUrlFromDB(t *testing.T) {
 	t.Log("DB Record Deletion operation successful!")
 
 }
+
+func TestCreateTableInDB(t *testing.T) {
+	TestConnectToSQL(t)
+	if err := CreateTableIfNotExists(); err != nil {
+		t.Log("table creation failed!")
+		t.Fatalf("failed table creation: %v", err.Error())
+	}
+	t.Log("Table creation successful!")
+}

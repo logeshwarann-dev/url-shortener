@@ -22,6 +22,8 @@ func init() {
 		log.Panic("DB connection error")
 		return
 	}
+
+	postgres.CreateTableIfNotExists()
 }
 
 func main() {
