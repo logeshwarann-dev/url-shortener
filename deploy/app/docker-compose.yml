@@ -1,6 +1,6 @@
 services:
   url-service:
-    image: logeshwarann/url-shortener:2007.1151
+    image: logeshwarann/url-shortener:2007.1205
     ports:
       - 8080:8080
     environment:
