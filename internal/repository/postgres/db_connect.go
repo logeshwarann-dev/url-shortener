@@ -28,7 +28,7 @@ func LoadDBEnv() {
 	dbPort = utils.GetEnv("DB_PORT")
 	dbName = utils.GetEnv("DB_NAME")
 	dbSslMode = utils.GetEnv("DB_SSL_MODE")
-	dbTimeZone = utils.GetEnv("Time_Zone")
+	dbTimeZone = utils.GetEnv("TIME_ZONE")
 }
 
 func GetDatabaseConnectionString() string {

@@ -1,2 +1,3 @@
-/deploy/db/data/
+/deploy/app/data/
+/deploy/db/data
 /cmd/api/.env
