@@ -19,11 +19,14 @@ func init() {
 	serverHost, serverPort = router.LoadAPIEnv()
 	postgres.LoadDBEnv()
 	if err := postgres.ConnectToSQL(); err != nil {
-		log.Panic("DB connection error")
+		log.Panicf("DB connection error: %v", err.Error())
 		return
 	}
 
-	postgres.CreateTableIfNotExists()
+	if err := postgres.CreateTableIfNotExists(); err != nil {
+		log.Panicf("Error in table creation: %v", err.Error())
+		return
+	}
 }
 
 func main() {

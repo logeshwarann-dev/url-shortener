@@ -53,7 +53,7 @@ func EncodeString(src string) string {
 func DecodeString(src string) (string, error) {
 	orgUrl, err := base62.StdEncoding.DecodeString(src)
 	if err != nil {
-		log.Fatal("Error while decoding string [Source string: ", src, "] err: ", err.Error())
+		log.Panic("Error while decoding string [Source string: ", src, "] err: ", err.Error())
 		return "", err
 	}
 	return string(orgUrl), nil
