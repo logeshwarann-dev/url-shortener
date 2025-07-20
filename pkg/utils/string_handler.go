@@ -10,6 +10,10 @@ import (
 	"github.com/deatil/go-encoding/base62"
 )
 
+func StringContains(src string, target string) bool {
+	return strings.Contains(src, target)
+}
+
 func RemoveCharFromString(src string, target string, newChar string) string {
 	return strings.ReplaceAll(src, target, newChar)
 }

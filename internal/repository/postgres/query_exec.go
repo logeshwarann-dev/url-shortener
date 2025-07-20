@@ -57,6 +57,13 @@ func FetchRecordFromDB(shortCode string, urlStruct *models.UrlInfo) error {
 
 func DeleteRecordInDB(shortCode string) error {
 	db := GetDBConn()
+	isRowPresent, err := CheckIfRecordExists(shortCode)
+	if err != nil {
+		return err
+	}
+	if !isRowPresent {
+		return fmt.Errorf("record doesn't exist in db")
+	}
 	rawQuery := BuildDeleteQuery(tableName, shortCode)
 	tx := db.Exec(rawQuery)
 	if tx.Error != nil {

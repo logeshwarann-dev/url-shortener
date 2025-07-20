@@ -15,7 +15,6 @@ func BuildFetchQuery(table string, shortCode string) string {
 }
 
 func BuildRowCheckQuery(selectQuery string) string {
-
 	return fmt.Sprintf("SELECT EXISTS(%v) AS FOUND ;", selectQuery)
 }
 

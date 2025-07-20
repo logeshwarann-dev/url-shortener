@@ -19,6 +19,11 @@ func DeleteShortURL(ctx *gin.Context) {
 
 	err := postgres.DeleteRecordInDB(targetShortCode)
 	if err != nil {
+		if utils.StringContains(err.Error(), "record doesn't exist") {
+			log.Println("Error in DeleteShortURL handler: ", err.Error())
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+			return
+		}
 		log.Println("Error while deleting shortCode: ", err.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
 		return
