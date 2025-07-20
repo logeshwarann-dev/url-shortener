@@ -67,11 +67,13 @@ func DeleteRecordInDB(shortCode string) error {
 
 func CheckIfRecordExists(shortCode string) (bool, error) {
 	db := GetDBConn()
-	rawQuery := BuildFetchQuery(tableName, shortCode)
-	var isPresent bool
-	err := db.Raw(rawQuery).Row().Scan(&isPresent)
+	selectQuery := BuildFetchQuery(tableName, shortCode)
+	selectQuery = utils.RemoveCharFromString(selectQuery, ";", "")
+	rawQuery := BuildRowCheckQuery(selectQuery)
+	var found bool
+	err := db.Raw(rawQuery).Row().Scan(&found)
 	if err != nil {
 		return false, fmt.Errorf("error while scanning record: %v", err.Error())
 	}
-	return isPresent, nil
+	return found, nil
 }

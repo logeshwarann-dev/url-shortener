@@ -5,9 +5,14 @@ import (
 	"log"
 	"reflect"
 	"strconv"
+	"strings"
 
 	"github.com/deatil/go-encoding/base62"
 )
+
+func RemoveCharFromString(src string, target string, newChar string) string {
+	return strings.ReplaceAll(src, target, newChar)
+}
 
 func CheckIfStringType(value any) bool {
 	return reflect.TypeOf(value).Kind() == reflect.String
