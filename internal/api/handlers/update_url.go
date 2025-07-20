@@ -27,6 +27,11 @@ func UpdateShortURL(ctx *gin.Context) {
 	}
 
 	if err := UpdateOrginalUrl(newUrlDetails.Url, targetShortCode); err != nil {
+		if utils.StringContains(err.Error(), "record doesn't exist") {
+			log.Println("Error in UpdateOrginalUrl handler: ", err.Error())
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+			return
+		}
 		log.Println("Error in UpdateOrginalUrl handler: ", err.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
 		return
