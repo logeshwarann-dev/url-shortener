@@ -13,10 +13,6 @@ func CheckIfStringType(value any) bool {
 	return reflect.TypeOf(value).Kind() == reflect.String
 }
 
-func CheckIfIntType(value any) bool {
-	return reflect.TypeOf(value).Kind() == reflect.Int
-}
-
 func IsStringEmpty(s string) bool {
 	return len(s) == 0
 }

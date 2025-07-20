@@ -19,10 +19,30 @@ func UpdateShortURL(ctx *gin.Context) {
 		return
 	}
 
+	var newUrlDetails models.UrlInfo
+	if err := ctx.ShouldBindJSON(&newUrlDetails); err != nil {
+		log.Println("Error in binding JSON of UpdateShortURL request: ", err.Error())
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+		return
+	}
+
+	if err := UpdateOrginalUrl(newUrlDetails.Url, targetShortCode); err != nil {
+		log.Println("Error in UpdateOrginalUrl handler: ", err.Error())
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
+		return
+	}
+
+	if err := postgres.FetchRecordFromDB(targetShortCode, &newUrlDetails); err != nil {
+		log.Println("error while fetching url record from db: ", err.Error())
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"id": utils.IntToStr(newUrlDetails.Id), "url": newUrlDetails.Url, "shortCode": newUrlDetails.ShortCode, "createdAt": newUrlDetails.CreatedAt, "updatedAt": newUrlDetails.UpdatedAt})
+
 }
 
 func UpdateOrginalUrl(newUrl string, shortCode string) error {
-
 	if err := postgres.UpdateRecordInDB(models.UrlField, newUrl, shortCode); err != nil {
 		return fmt.Errorf("failed updating access count: %v", err.Error())
 	}

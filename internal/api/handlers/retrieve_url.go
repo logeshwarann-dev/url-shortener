@@ -62,9 +62,8 @@ func RetrieveShortURLStats(ctx *gin.Context) {
 }
 
 func UpdateAccessCount(currentAccessCnt int, shortCode string) error {
-	accessCntField := "access_count"
 	newCount := utils.IntToStr(currentAccessCnt + 1)
-	if err := postgres.UpdateRecordInDB(accessCntField, newCount, shortCode); err != nil {
+	if err := postgres.UpdateRecordInDB(models.AccessCountField, newCount, shortCode); err != nil {
 		return fmt.Errorf("failed updating access count: %v", err.Error())
 	}
 	return nil

@@ -29,7 +29,7 @@ Response:
 */
 
 const ShortCodeLength = 6
-const DefaultAccessCount = 1
+const DefaultAccessCount = 0
 
 func CreateShortURL(ctx *gin.Context) {
 	var urlDetails models.UrlInfo
@@ -59,7 +59,7 @@ func CreateShortURL(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"id": utils.IntToStr(urlDetails.Id), "url": urlDetails.Url, "shortCode": urlDetails.ShortCode, "createdAt": urlDetails.CreatedAt, "updatedAt": urlDetails.UpdatedAt})
+	ctx.JSON(http.StatusCreated, gin.H{"id": utils.IntToStr(urlDetails.Id), "url": urlDetails.Url, "shortCode": urlDetails.ShortCode, "createdAt": urlDetails.CreatedAt, "updatedAt": urlDetails.UpdatedAt})
 
 }
 
